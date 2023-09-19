@@ -41,9 +41,13 @@ python main.py --dataset yoochoose1_64 --dim_feedforward 64 --num_layers 2 --pos
 -> Install MADGRAD optimizer (https://github.com/facebookresearch/madgrad)
 ## Requirements
 -> TransE embedding is implemented using Ampligraph (https://docs.ampligraph.org/en/1.4.0/generated/ampligraph.latent_features.TransE.html)
+
 -> ampligraph 1.4.0
+
 -> tensorflow or tensorflow-gpu '>=1.15.2,<2.0.0'
+
 -> Python 3
+
 -> Pytorch 2.0.1
 ## Citation
 Please cite our original paper if you use our code 
