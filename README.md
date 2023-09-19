@@ -47,6 +47,7 @@ python main.py --dataset yoochoose1_64 --dim_feedforward 64 --num_layers 2 --pos
 -> Pytorch 2.0.1
 ## Citation
 Please cite our original paper if you use our code 
+
 @article{srilakshmi2020improved,
   title={Improved Session based Recommendation using Graph-based Item Embedding},
   author={Srilakshmi, Madiraju and Chowdhury, Gourab and Sarkar, Sudeshna},
