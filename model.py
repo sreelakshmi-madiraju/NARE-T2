@@ -37,10 +37,11 @@ class PositionalEmbedding(nn.Module):
 
         # Compute the positional encodings once in log space.
         self.pe = nn.Embedding(max_len, d_model)
+        self.dropout = nn.Dropout(p=0.1)
 
     def forward(self, x):
         batch_size = x.size(0)
-        return x+self.pe.weight.unsqueeze(0).repeat(batch_size, 1, 1)
+        return self.dropout(x+self.pe.weight.unsqueeze(0).repeat(batch_size, 1, 1))
 
 
 class Attention(nn.Module):
