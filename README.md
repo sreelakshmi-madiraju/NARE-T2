@@ -10,12 +10,16 @@ Download yoochoose-clicks.dat from the above link and save the file in Datasets 
 
 DIGINETICA: http://cikm2016.cs.iupui.edu/cikm-cup or https://competitions.codalab.org/competitions/11161
 Download train-item-views.csv from the above link and save the file in Datasets folder
+
 -> Run preprocess.py with dataset name as argument to generate train and test files. (dataset name: diginetica/yoochoose/sample)
 Example: python preprocess.py --dataset=yoochoose
+
 -> The required files are already available in the appropriate folders. 
 ## Compute TransE Embedding 
 -> Run create_transe_emb_diginetica.py to generate KG triples and compute transe embedding on diginetica dataset. Parameters are optimized based on validation data. The best values are given in the code.
+
 -> Run create_transe_emb_yoochoose.py to generate KG triples and compute transe embedding on diginetica dataset. Parameters are optimized based on validation data. The best values are given in the code.
+
 -> The required files are already available in the appropriate folders. 
 ## Run the model
 -> python main.py main.py [--dataset DATASET] [--batchSize BATCHSIZE] [--dim_feedforward FEED_FORWARD_UNITS]
@@ -27,10 +31,13 @@ Example: python preprocess.py --dataset=yoochoose
 -> Mandatory Arguments 
   1) --dataset: name of the dataset
   2) --pos_encoding: style of positional encoding (0 for fixed and 1 for trainable)
+
 -> Best Results are obtained on Yoochoose1_64 with the following parameters (Remaining are default)
 python main.py --dataset yoochoose1_64 --dim_feedforward 64 --num_layers 2 --pos_encoding 0 --dropout 0.4
+
 -> Best Results are obtained on Diginetica with the following parameters.
  python main.py --dataset diginetica --dim_feedforward 512 --num_layers 4 --pos_encoding 1 --dropout 0.5 --lr_dc_step 1
+
 -> Install MADGRAD optimizer (https://github.com/facebookresearch/madgrad)
 ## Requirements
 -> TransE embedding is implemented using Ampligraph (https://docs.ampligraph.org/en/1.4.0/generated/ampligraph.latent_features.TransE.html)
