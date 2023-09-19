@@ -1,0 +1,68 @@
+from ampligraph.latent_features import TransE
+from ampligraph.latent_features import HolE
+from ampligraph.utils import save_model, restore_model
+import numpy as np
+import _pickle as cPickle
+from ampligraph.datasets import load_from_csv
+from ampligraph.evaluation import train_test_split_no_unseen
+import os
+import _pickle as cPickle
+import csv
+from itertools import chain
+
+with open('yoochoose1_64/all_train_seq.txt','rb')as f:
+    all_train=cPickle.load(f)
+
+
+triples =[]
+for i in range (len(all_train)):
+    for j in range(len(all_train[i])):
+        for k in range(j+1, len(all_train[i])):
+            if k-j < 10:
+                triples.append([str(all_train[i][j]),str(i),str(all_train[i][k])])
+    
+with open('KG_triples.csv', 'w') as f:
+  writer = csv.writer(f, delimiter=',')
+  writer.writerows(triples)
+        
+X=load_from_csv('.', 'KG_triples.csv', sep=',')
+#X_train, X_valid = train_test_split_no_unseen(X, test_size=int(0.1*length))
+model = TransE(batches_count=100,
+                epochs=30,
+                k=200,
+                eta=10,
+                embedding_model_params={'corrupt_sides': ['s','o'], 'negative_corruption_entities': 'all', 'norm': 1, 'normalize_ent_emb': False},
+                loss = 'multiclass_nll',
+                optimizer='adam',
+                optimizer_params={'lr':1e-3},
+                regularizer='LP',
+                regularizer_params={'p':3, 'lambda':1e-5},
+                seed=0,
+                verbose=True)
+
+# model.fit(X_train,
+#               early_stopping = True,
+#               early_stopping_params = \
+#                       {
+#                           'x_valid': X_valid,       # validation set
+#                           'criteria':'hits10',         # Uses hits10 criteria for early stopping
+#                           'burn_in': 20,              # early stopping kicks in after 100 epochs
+#                           'check_interval':5,         # validates every 20th epoch
+#                           'stop_interval':2,           # stops if 5 successive validation checks are bad.
+#                           'x_filter': filter,          # Use filter for filtering out positives
+#                           'corruption_entities':'all', # corrupt using all entities
+#                           'corrupt_side':'s+o'         # corrupt subject and object (but not at once)
+#                       }
+#               )
+
+
+model.fit(X)
+
+vocab = list(set(chain(*all_train)))
+vocab = [str(each) for each in vocab]
+print(len(vocab))
+
+item_embeddings = dict(zip(vocab, model.get_embeddings(vocab)))
+with open("yoochoose1_64/transe_emb","wb") as f:
+        cPickle.dump(item_embeddings,f)
+
